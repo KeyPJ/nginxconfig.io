@@ -32,9 +32,15 @@ const main = () => {
     const buildDir = path.join(__dirname, '..', '..', '..', 'build');
     let template = fs.readFileSync(path.join(buildDir, 'base.html'), 'utf8');
 
-    template = template.replace('<block name="title"></block>', 'NGINXConfig | ');
+    template = template.replace('<block name="title">.*</block>', 'NGINXConfig | ');
     template = template.replace('<block name="head"></block>', '');
     template = template.replace('<block name="content"></block>', '<div id="app"></div>');
+    template = template.replace(/<nav([\s\S]*)<\/nav>/, '');
+    template = template.replace(/<div class="helpfulness-cont">([\s\S]*)<\/div>/, '');
+    template = template.replace(/<script src="https:\/\/www\.digitalocean\.com\/assets\/community\/internalCookies.*<\/script>/, '');
+    template = template.replace('<script defer="" src="https://assets.digitalocean.com/cookieConsent/cookieConsent.js"></script>', '');
+    template = template.replace('<title>DigitalOcean</title>', '<title>NGINXConfig</title>');
+
 
     fs.writeFileSync(path.join(buildDir, 'index.html'), template);
 };
